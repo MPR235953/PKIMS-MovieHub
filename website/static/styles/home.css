@@ -1,0 +1,9 @@
+#my-get-started{
+    width: 600px;
+    margin: auto;
+    border: 1px solid red;
+}
+
+#my-get-started h1{
+    font-size: 120px;
+}
