@@ -8,3 +8,8 @@ body{
 #container{
     margin: auto;
 }
+
+.ls-form-div{
+    margin: auto;
+    width: 30%;
+}
