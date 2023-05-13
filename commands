@@ -1,0 +1,8 @@
+# run composite
+docker compose -f docker-compose.yml up -d  # in detached mode
+# get process id
+docker ps
+# get into db
+docker exec -it <container-id> mongo mongosh --username root --password root --authenticationDatabase admin
+# delete all containers and volumes
+docker compose -f docker-compose.yml down --volumes
