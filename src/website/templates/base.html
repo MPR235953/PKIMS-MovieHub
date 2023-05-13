@@ -36,6 +36,21 @@
       </div>
     </nav>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <!--All alerts will be automatically closed after 5 sec-->
+    <script type="text/javascript">
+        setTimeout(function () { $('.alert').alert('close'); }, 5000);
+    </script>
+
     <div id="container">
         {% block content %}
 
