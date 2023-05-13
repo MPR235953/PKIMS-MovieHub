@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}
+    Home
+{% endblock %}
 
 {% block local_styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}" />
@@ -9,9 +11,5 @@
 {% endblock %}
 
 {% block content%}
-    <div id="my-get-started">
-        <h1>MovieHub</h1>
-        <button type="button" class="btn btn-outline-warning btn-lg rounded-pill" onclick="toLoginPage()">log in</button>
-        <button type="button" class="btn btn-outline-warning btn-lg rounded-pill">sign up</button>
-    </div>
+
 {% endblock %}
