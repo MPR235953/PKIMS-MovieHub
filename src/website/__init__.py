@@ -1,6 +1,8 @@
+from bson import ObjectId
 from flask import Flask
 from flask_login import LoginManager
 from pymongo import MongoClient
+from src.website.models import User
 
 client = MongoClient('mongodb://root:root@pkims-moviehub-mongo-container-1', maxIdleTimeMS=60000, serverSelectionTimeoutMS=5000)
 db = client['user-data']
@@ -20,7 +22,10 @@ def create_app():
     login_manager.init_app(app)
 
     @login_manager.user_loader
-    def load_user(id):
-        return collection.find_one({"_id": id})
+    def load_user(user_id):
+        user = collection.find_one({'_id': ObjectId(user_id)})
+        if not user:
+            return None
+        return User(user['_id'])
 
     return app

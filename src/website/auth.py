@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from pymongo.errors import ServerSelectionTimeoutError
-from . import collection
+from . import collection, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -12,16 +12,19 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        user = collection.find_one({"email": email})
-        if user:
-            if check_password_hash(user['password'], password):
-                flash('Logged successfully!', category='alert-success')
-                login_user(user, remember=True)  # store user in flask session
-                return redirect(url_for('views.home'))
+        try:
+            user = collection.find_one({"email": email})
+            if user:
+                if check_password_hash(user['password'], password):
+                    flash('Logged successfully!', category='alert-success')
+                    login_user(User(user['_id']), remember=True)  # store user in flask session
+                    return redirect(url_for('views.home'))
+                else:
+                    flash('Incorrect password, try again', category='alert-danger')
             else:
-                flash('Incorrect password, try again', category='alert-danger')
-        else:
-            flash('Email does not exist', category='alert-danger')
+                flash('Email does not exist', category='alert-danger')
+        except ServerSelectionTimeoutError:
+            flash('Connection timed out', category='alert-warning')
 
     return render_template("login.html", user=current_user)
 
@@ -54,7 +57,7 @@ def sign_up():
                 flash('Password is too short, must be at least 7 characters', category='alert-danger')
             else:
                 collection.insert_one({'email': email, 'firstName': first_name, 'password': generate_password_hash(password1, method='sha256')})
-                login_user(user, remember=True)  # store user in flask session
+                login_user(User(user['_id']), remember=True)  # store user in flask session
                 flash('Account created!', category='alert-success')
                 return redirect(url_for('views.home'))
         except ServerSelectionTimeoutError:
