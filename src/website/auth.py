@@ -1,27 +1,50 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from pymongo.errors import ServerSelectionTimeoutError
 from . import collection
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
-    data = request.form
-    return render_template("login.html")
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = collection.find_one({"email": email})
+        if user:
+            if check_password_hash(user['password'], password):
+                flash('Logged successfully!', category='alert-success')
+                login_user(user, remember=True)  # store user in flask session
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password, try again', category='alert-danger')
+        else:
+            flash('Email does not exist', category='alert-danger')
+
+    return render_template("login.html", user=current_user)
 
 @auth.route("/logout")
+@login_required
 def logout():
-    return "logout"
+    logout_user()   # logout current user
+    return redirect(url_for('auth.login'))
 
 @auth.route("/sign_up", methods=['GET', 'POST'])
 def sign_up():
-    try:
-        if request.method == 'POST':
-            email = request.form.get('email')
-            first_name = request.form.get('firstName')
-            password1 = request.form.get('password1')
-            password2 = request.form.get('password2')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        first_name = request.form.get('firstName')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
 
-            if len(email) < 4:
+        try:
+            user = collection.find_one({"email": email})
+
+            if user:
+                flash('Email already exist', category='alert-danger')
+            elif len(email) < 4:
                 flash('Email is too short, must be at least 4 characters', category='alert-danger')
             elif len(first_name) < 2:
                 flash('First name is too short, must be at least 2 characters', category='alert-danger')
@@ -30,10 +53,11 @@ def sign_up():
             elif len(password1) < 7:
                 flash('Password is too short, must be at least 7 characters', category='alert-danger')
             else:
-                res = collection.insert_one({'email': email, 'firstName': first_name, 'password': password1})
-                print(res)
+                collection.insert_one({'email': email, 'firstName': first_name, 'password': generate_password_hash(password1, method='sha256')})
+                login_user(user, remember=True)  # store user in flask session
                 flash('Account created!', category='alert-success')
-        return render_template("sign_up.html", test='> ' + str(collection.users.find()))
-    except Exception as e:
-        print(e)
-        return render_template("sign_up.html", test=e)
+                return redirect(url_for('views.home'))
+        except ServerSelectionTimeoutError:
+            flash('Connection timed out', category='alert-warning')
+
+    return render_template("sign_up.html", user=current_user)
