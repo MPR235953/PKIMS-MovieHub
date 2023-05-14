@@ -19,6 +19,7 @@ def create_app():
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'  # where flask should redirect if we not logged
+    login_manager.login_message_category = "alert-warning"
     login_manager.init_app(app)
 
     @login_manager.user_loader
