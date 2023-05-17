@@ -10,6 +10,8 @@ services:
       - "5000:5000"
     networks:
       - website-mongo
+      - website-mysql
 
 networks:
   website-mongo:
+  website-mysql:
