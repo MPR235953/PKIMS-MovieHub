@@ -3,10 +3,30 @@ from flask import Flask
 from flask_login import LoginManager
 from pymongo import MongoClient
 from src.website.models import User
+import mysql.connector
 
 client = MongoClient('mongodb://root:root@pkims-moviehub-mongo-container-1', maxIdleTimeMS=60000, serverSelectionTimeoutMS=5000)
 db = client['user-data']
 collection = db['users']
+
+connection = mysql.connector.connect(
+    host='pkims-moviehub-mysql-container-1',
+    user='root',
+    password='root',
+    database='mydatabase'
+)
+cursor = connection.cursor()
+
+query = "SELECT * FROM users"
+cursor.execute(query)
+
+# Fetch all rows from the result
+result = cursor.fetchall()
+
+# Process the result
+for row in result:
+    print(row)
+
 
 def create_app():
     app = Flask(__name__)

@@ -9,3 +9,4 @@ pymongo==4.3.3
 Werkzeug==2.3.3
 Flask-PyMongo==2.3.0
 Flask-Login==0.6.2
+mysql-connector-python==8.0.33
