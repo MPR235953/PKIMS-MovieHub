@@ -4,7 +4,7 @@
     border: 2px solid var(--ubuntu-orange);
 }
 
-#img img {
+#poster img {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
