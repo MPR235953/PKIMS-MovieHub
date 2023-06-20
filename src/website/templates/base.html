@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--Links to local styles-->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" />
+    <!--Links to local JS-->
+    <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
 
     {% block local_styles %}
 
@@ -37,6 +39,12 @@
               {% endif %}
           </div>
       </div>
+         {% if user.is_authenticated %}
+              <div class="d-flex">
+                <input id="movieSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit" onclick="getValueFromMovieSearch()">Search</button>
+              </div>
+         {% endif %}
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}

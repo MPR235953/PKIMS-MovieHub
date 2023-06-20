@@ -6,18 +6,18 @@ from src.website.models import User
 import mysql.connector
 
 client = MongoClient('mongodb://root:root@pkims-moviehub-mongo-container-1', maxIdleTimeMS=60000, serverSelectionTimeoutMS=5000)
-db = client['user-data']
+db = client['user_db']
 collection = db['users']
 
 connection = mysql.connector.connect(
     host='pkims-moviehub-mysql-container-1',
     user='root',
     password='root',
-    database='mydatabase'
+    database='movie_db'
 )
 cursor = connection.cursor()
 
-query = "SELECT * FROM users"
+query = "SELECT * FROM movies"
 cursor.execute(query)
 
 # Fetch all rows from the result

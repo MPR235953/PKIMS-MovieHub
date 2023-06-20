@@ -1,12 +1,18 @@
 # run composite
 docker compose -f <cfg.yml> up -d  # in detached mode
+
 # get process id
 docker ps
+
 # get into mongo db
 docker exec -it <container-id> mongosh --username root --password root --authenticationDatabase admin
+
 # delete all containers and volumes
 docker compose -f <cfg.yml> down --volumes
+
 # delete docker images
 docker rmi <image-id>
+
 # get into mysql db
 docker exec -it <container-id> mysql -u root -p root
+

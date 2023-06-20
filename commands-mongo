@@ -1,0 +1,9 @@
+# in terminal
+docker compose -f mongo-cfg.yml up -d
+docker exec -it <container-id> mongosh --username root --password root --authenticationDatabase admin
+
+# in mongosh
+show dbs
+use user_db
+db.createCollection("users")
+db.users.find()

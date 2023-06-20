@@ -1,0 +1,12 @@
+# in terminal
+docker compose -f website-cfg.yml up
+docker rmi pkims-moviehub-website-container -f
+
+
+# test user
+{
+    _id: ObjectId("649137f82b60387aa42bdb4d"),
+    email: 'user@user.com',
+    firstName: 'user',
+    password: 'sha256$Ej8GKds4PNYW11Vl$4b175b039b9829642420999b582f57e184036d35b15f58eb5f4bf68bd6c9e2f3'
+}
