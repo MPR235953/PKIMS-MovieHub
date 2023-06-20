@@ -1,12 +1,26 @@
+:root {
+    --ubuntu-orange: #dd4814;
+    --ubuntu-light-violet: #77216f;
+    --ubuntu-medium-violet: #5e2750;
+    --ubuntu-test-violet: #3d112f;
+    --ubuntu-dark-violet: #2c001e;
+    --ubuntu-light-gray: #aea79f;
+    --ubuntu-medium-gray: #333333;
+    --ubuntu-dark-gray: #222222;
+    --ubuntu-light-green: #33da7a;
+    --white2115: #ffffff;
+}
+
 body{
-    color: #fff;
+    color: var(--white2115);
     font-family: 'Ubuntu';
-    background-color: #2C001E;
+    background-color: var(--ubuntu-dark-violet);
     margin: auto;
 }
 
 #container{
     margin: auto;
+    width: 60%;
 }
 
 .ls-form-div{
@@ -15,13 +29,13 @@ body{
 }
 
 .navbar{
-    background-color: #222;
+    background-color: var(--ubuntu-dark-gray);
 }
 
 .nav-link{
-    color: #fff;
+    color: var(--white2115);
 }
 
 .nav-link:hover{
-    color: #33da7a;
+    color: var(--ubuntu-light-green);
 }

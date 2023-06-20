@@ -1,0 +1,18 @@
+.ls-movie-div{
+    background-color: var(--ubuntu-test-violet);
+    border-radius: 10px;
+    border: 2px solid var(--ubuntu-orange);
+}
+
+#img img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.ls-title{
+    text-align: center;
+    font-size: 30px;
+    color: var(--white2115);
+}
