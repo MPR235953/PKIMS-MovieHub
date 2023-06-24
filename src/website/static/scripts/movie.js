@@ -18,8 +18,8 @@ function getValueFromMovieSearch(){
       document.getElementById("ls-found").style.display = "block";
       document.getElementById("ls-not-found").style.display = "none";
 
-      document.getElementById("ls-movie-title").innerHTML = responseData["Title"]
-      document.getElementById("poster").innerHTML = `<img src="${responseData['Poster']}" alt="movie title"/>`
+      document.getElementById("Title").innerHTML = responseData["Title"]
+      document.getElementById("Poster").innerHTML = `<img src="${responseData['Poster']}" alt="movie title"/>`
       document.getElementById("Year").innerHTML = responseData["Year"]
       document.getElementById("Runtime").innerHTML = responseData["Runtime"]
       document.getElementById("Genre").innerHTML = responseData["Genre"]

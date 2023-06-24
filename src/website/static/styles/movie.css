@@ -1,10 +1,10 @@
 .ls-movie-div{
     background-color: var(--ubuntu-test-violet);
     border-radius: 10px;
-    border: 2px solid var(--ubuntu-light-green);
+    border: 2px solid var(--ubuntu-orange);
 }
 
-#poster img {
+#Poster img {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
@@ -26,5 +26,19 @@
 }
 
 .ls-details-header{
-    color: var(--ubuntu-light-green);
+    color: var(--ubuntu-orange);
+}
+
+.ls-add-btn{
+    background-color: var(--ubuntu-orange) !important;
+    color: var(--white2115) !important;
+}
+
+.ls-add-btn:hover{
+    background-color: var(--ubuntu-light-green) !important;
+    color: var(--ubuntu-dark-violet) !important;
+}
+
+.ls-add-btn-div{
+    text-align: center;
 }

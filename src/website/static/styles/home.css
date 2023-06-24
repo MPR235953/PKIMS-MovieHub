@@ -38,10 +38,10 @@
     transform: scale(1.025);
 }
 
-.ls-btn{
+.ls-remove-btn{
     background-color: var(--ubuntu-light-gray) !important;
 }
 
-.ls-btn:hover{
+.ls-remove-btn:hover{
     background-color: var(--ubuntu-orange) !important;
 }
