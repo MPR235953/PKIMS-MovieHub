@@ -1,7 +1,7 @@
 .ls-movie-div{
     background-color: var(--ubuntu-test-violet);
     border-radius: 10px;
-    border: 2px solid var(--ubuntu-orange);
+    border: 2px solid var(--ubuntu-light-green);
 }
 
 #poster img {
@@ -15,4 +15,16 @@
     text-align: center;
     font-size: 30px;
     color: var(--white2115);
+}
+
+#ls-not-found{
+    display: none;
+}
+
+#ls-found{
+    display: none;
+}
+
+.ls-details-header{
+    color: var(--ubuntu-light-green);
 }

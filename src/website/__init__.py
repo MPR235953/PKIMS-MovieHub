@@ -5,10 +5,12 @@ from pymongo import MongoClient
 from src.website.models import User
 import mysql.connector
 
+# Connect to Mongo DB
 client = MongoClient('mongodb://root:root@pkims-moviehub-mongo-container-1', maxIdleTimeMS=60000, serverSelectionTimeoutMS=5000)
 db = client['user_db']
 collection = db['users']
 
+# Connect to MySQL DB
 connection = mysql.connector.connect(
     host='pkims-moviehub-mysql-container-1',
     user='root',

@@ -13,6 +13,21 @@
 {% block content%}
 
 <div class="row mt-5">
+    <div class="col-md-12">
+        <div class="d-flex">
+            <input id="movieSearch" class="form-control me-2" name="movieSearch" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit" onclick="getValueFromMovieSearch()">Search</button>
+        </div>
+    </div>
+</div>
+
+<div id="ls-not-found" class="row mt-5">
+    <div class="col-md-12">
+        <h1> Movie not found :( </h1>
+    </div>
+</div>
+
+<div id="ls-found" class="row mt-5">
     <div class="col-md-12 ls-movie-div">
 
         <div class="row px-3">
@@ -21,9 +36,9 @@
                     <div class="col-12 col-md-12">
 
                         <div class="row">
-                            <div class="col-12 col-md-12 pb-3">
+                            <div class="col-12 col-md-12 py-3">
                                 <div id="ls-movie-title" class="ls-title">
-                                    placeholder
+                                    title
                                 </div>
                             </div>
                         </div>
@@ -31,12 +46,43 @@
                         <div class="row">
                             <div class="col-4 col-md-4">
                                 <div id="poster">
-                                    <img src="https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"
-                                         alt="movie title"/>
+
                                 </div>
                             </div>
 
                             <div class="col-8 col-md-8">
+                                <div class="row"><div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Year:</span>
+                                    <span id="Year"></span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Runtime: </span>
+                                    <span id="Runtime"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Genre: </span>
+                                    <span id="Genre"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Director: </span>
+                                    <span id="Director"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Actors: </span>
+                                    <span id="Actors"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Country: </span>
+                                    <span id="Country"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">imdbRating: </span>
+                                    <span id="imdbRating"> </span>
+                                </div></div>
+                                <div class="row"> <div class="col-12 col-md-12">
+                                    <span class="ls-details-header">Plot: </span>
+                                    <span id="Plot"> </span>
+                                </div></div>
 
                             </div>
                         </div>
