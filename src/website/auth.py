@@ -17,7 +17,7 @@ def login():
             if user:
                 if check_password_hash(user['password'], password):
                     flash('Logged successfully!', category='alert-success')
-                    login_user(User(user['_id']), remember=True)  # store user in flask session
+                    login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
                     return redirect(url_for('views.home'))
                 else:
                     flash('Incorrect password, try again', category='alert-danger')
@@ -56,8 +56,13 @@ def sign_up():
             elif len(password1) < 7:
                 flash('Password is too short, must be at least 7 characters', category='alert-danger')
             else:
-                collection.insert_one({'email': email, 'firstName': first_name, 'password': generate_password_hash(password1, method='sha256')})
-                login_user(User(user['_id']), remember=True)  # store user in flask session
+                collection.insert_one({
+                    'email': email,
+                    'firstName': first_name,
+                    'password': generate_password_hash(password1, method='sha256'),
+                    'moviesId': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                })
+                login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
                 flash('Account created!', category='alert-success')
                 return redirect(url_for('views.home'))
         except ServerSelectionTimeoutError:

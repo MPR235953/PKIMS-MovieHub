@@ -11,5 +11,57 @@
 {% endblock %}
 
 {% block content%}
+    <div class="row mt-5">
+        <div class="col-md-12 ls-movie-div">
 
+            <div class="row mb-3">
+                <div class="col-md-12 ls-title">
+                    <h1> <span style="color: var(--white2115);" > Hi </span> {{ user.name }} </h1>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-12 ls-subtitle">
+                    <h4> your favorite films </h4>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+
+                    <div class="row flex-nowrap overflow-auto">
+                        {% for movieId in user.movies_id %}
+                            <div class="col-4 mx-2 mb-5 p-3 ls-scroll-item">
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-2 ls-movie-title">
+                                        <h5> title {{ movieId }} </h5>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="ls-movie-poster">
+                                            <a href="#">
+                                                <img src="https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn ls-btn" onclick="">remove</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

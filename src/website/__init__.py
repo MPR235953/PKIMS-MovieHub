@@ -47,6 +47,6 @@ def create_app():
         user = collection.find_one({'_id': ObjectId(user_id)})
         if not user:
             return None
-        return User(user['_id'])
+        return User(user["_id"], user["email"], user["firstName"], user["moviesId"])
 
     return app
