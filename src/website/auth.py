@@ -20,8 +20,6 @@ def login():
                 if check_password_hash(user['password'], password):
                     flash('Logged successfully!', category='alert-success')
 
-                    user = User(user["_id"], user["email"], user["firstName"], user["moviesId"])
-
                     movies = []
                     for movie_id in user["moviesId"]:
                         query = f"select id, Title, Poster from movies where id = {movie_id}"
@@ -34,7 +32,7 @@ def login():
                             movies.append(Movie(int(id), name, poster).toJSON())
                     #user.update_movies(movies)
 
-                    login_user(user, remember=True)  # store user in flask session
+                    login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
 
                     session["movies"] = movies
 

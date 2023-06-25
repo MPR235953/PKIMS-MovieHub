@@ -42,3 +42,18 @@
 .ls-add-btn-div{
     text-align: center;
 }
+
+.ls-free-link:link, .ls-free-link:visited, .ls-free-link:active{
+    text-decoration: none;
+    color: var(--ubuntu-orange);
+}
+
+.ls-free-link:hover{
+    text-decoration: underline;
+    color: var(--ubuntu-light-green);
+}
+
+.ls-full-width-input{
+    width: 100%;
+    box-sizing: border-box;
+}

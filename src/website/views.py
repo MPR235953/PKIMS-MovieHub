@@ -35,6 +35,7 @@ def receive_data():
         response = urlopen(API_LINK + received_data)
         data_json = json.loads(response.read())
         if "Error" in data_json.keys(): return Exception
+        data_json["FreeLinks"] = ""
         data_json["Title"] = received_data
         insert_movie(data_json)
         return data_json
@@ -42,6 +43,7 @@ def receive_data():
         data = []
         for row in rows:
             data.append(dict(zip(columns, row)))
+        if not data[0]["FreeLinks"]: data[0]["FreeLinks"] = ""
         data_json = json.dumps(data[0], indent=4)
         return data_json
 
@@ -127,3 +129,29 @@ def remove_movie_from_user():
     except Exception:
         flash('Something goes wrong', category='alert-danger')
         return {"Error": True}
+
+@views.route('add_link', methods=["POST"])
+def add_link():
+
+    data = request.get_json()
+    received_data = data.get('dataFromJS')
+    movie_title = received_data["movieName"]
+    free_link = received_data["freeLink"]
+    print(received_data)
+
+    query = "SELECT FreeLinks FROM movies WHERE Title = %s LIMIT 1"
+    cursor.execute(query, (movie_title,))
+    rows = cursor.fetchall()
+    free_links = ""
+    for row in rows:
+        free_links = row[0]
+    if not free_links:
+        free_links = ""
+    free_links += free_link + ','
+
+    update = "UPDATE movies SET FreeLinks = %s WHERE Title = %s"
+    cursor.execute(update, (free_links, movie_title))
+
+    flash('New link added', category='alert-success')
+
+    return {"Error": False}

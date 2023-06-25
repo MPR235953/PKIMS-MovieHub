@@ -34,5 +34,6 @@ CREATE TABLE IF NOT EXISTS movies (
     BoxOffice TEXT,
     Production TEXT,
     Website TEXT,
-    Response TEXT
+    Response TEXT,
+    FreeLinks TEXT
 );

@@ -38,6 +38,21 @@ function getValueFromMovieSearch(){
       document.getElementById("Country").innerHTML = responseData["Country"]
       document.getElementById("imdbRating").innerHTML = responseData["imdbRating"]
       document.getElementById("Plot").innerHTML = responseData["Plot"]
+
+      var links = responseData["FreeLinks"].split(",");
+      var content = ""
+      for (let link of links) {
+        if(link.length !== 0){
+              content += `
+                <div class="col-12 col-md-12">
+                    <a href="${link}" target="_blank" class="ls-free-link">${link}</a>
+                </div>
+              `
+          }
+      }
+
+      document.getElementById("FreeLinks").innerHTML = content;
+
     })
     .catch(error => {
       // Handle any errors that occur during the request
@@ -74,5 +89,32 @@ function addMovieToUser(){
 }
 
 function addLink(){
+    var freeLink = document.getElementById("freeLink").value;
+    var movieName = document.getElementById("Title").innerText;
 
+    console.log(freeLink);
+    console.log(movieName);
+
+    const data = { dataFromJS: {"freeLink": freeLink, "movieName": movieName}};
+
+    fetch('/add_link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      // Handle the response from Flask server
+      console.log(responseData);
+      window.location.href = "/movie?movie_name=" + movieName;
+      //document.getElementById("movieSearch").value = movieName;
+      //getValueFromMovieSearch();
+    })
+    .catch(error => {
+      // Handle any errors that occur during the request
+      console.error('Error:', error);
+
+    });
 }
