@@ -50,6 +50,7 @@ def login():
 @auth.route("/logout")
 @login_required
 def logout():
+    session.clear()
     logout_user()   # logout current user
     return redirect(url_for('auth.login'))
 
@@ -81,7 +82,9 @@ def sign_up():
                     'password': generate_password_hash(password1, method='sha256'),
                     'moviesId': []
                 })
+                user = collection.find_one({"email": email})
                 login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
+                session["movies"] = []
                 flash('Account created!', category='alert-success')
                 return redirect(url_for('views.home'))
         except ServerSelectionTimeoutError:
