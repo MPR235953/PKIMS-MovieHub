@@ -45,10 +45,8 @@
 
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
-                                        <div class="ls-movie-poster">
-                                            <a href="#">
-                                                <img src="{{ movie['img'] }}"/>
-                                            </a>
+                                        <div class="ls-movie-poster" onclick="onPosterClick('{{ movie['name'] }}')">
+                                            <img src="{{ movie['img'] }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +54,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="d-grid gap-2">
-                                            <button type="button" class="btn ls-remove-btn" onclick="">remove</button>
+                                            <button type="button" class="btn ls-remove-btn" onclick="removeMovieFromUser('{{ movie['name'] }}')">remove</button>
                                         </div>
                                     </div>
                                 </div>

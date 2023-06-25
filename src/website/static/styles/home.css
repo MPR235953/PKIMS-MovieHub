@@ -36,6 +36,7 @@
 
 .ls-movie-poster img:hover{
     transform: scale(1.025);
+    cursor: pointer;
 }
 
 .ls-remove-btn{

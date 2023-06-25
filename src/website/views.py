@@ -22,7 +22,7 @@ def home():
 @views.route('/movie')
 @login_required
 def movie():
-    return render_template("movie.html", user=current_user, movie_title="placeholder")
+    return render_template("movie.html", user=current_user)
 
 @views.route('/receive_data', methods=["POST"])
 def receive_data():
@@ -84,11 +84,16 @@ def add_movie_to_user():
                 {"_id": current_user.id},
                 {"$addToSet": {"moviesId": int(id)}}
             )
-            current_user.movies_id.append(int(id))
-            current_user.add_movie(Movie(int(id), name, poster))
-            current_user.save()
+            #current_user.movies_id.append(int(id))
+            #current_user.add_movie(Movie(int(id), name, poster))
+            session["movies"].append(Movie(int(id), name, poster).toJSON())
             flash('Movie was added', category='alert-success')
         return {"Error": False}
     except Exception:
         flash('Movie cannot be added', category='alert-danger')
         return {"Error": True}
+
+
+@views.route('remove_movie_from_user', methods=["POST"])
+def remove_movie_from_user():
+    pass

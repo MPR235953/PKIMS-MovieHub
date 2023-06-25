@@ -1,3 +1,13 @@
+function showIfMovie(){
+    var urlParams = new URLSearchParams(window.location.search);
+    var movieName = urlParams.get('movie_name');
+    console.log(movieName);
+    if(movieName){
+        document.getElementById("movieSearch").value = movieName;
+        getValueFromMovieSearch();
+    }
+}
+
 function getValueFromMovieSearch(){
     var movieTitle = document.getElementById("movieSearch").value;
     console.log(movieTitle);
