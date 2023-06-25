@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from pymongo.errors import ServerSelectionTimeoutError
-from . import collection, User
+from . import collection, User, cursor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+
+from .models import Movie
 
 auth = Blueprint('auth', __name__)
 
@@ -17,8 +19,27 @@ def login():
             if user:
                 if check_password_hash(user['password'], password):
                     flash('Logged successfully!', category='alert-success')
-                    login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
+
+                    user = User(user["_id"], user["email"], user["firstName"], user["moviesId"])
+
+                    movies = []
+                    for movie_id in user.movies_id:
+                        query = f"select id, Title, Poster from movies where id = {movie_id}"
+                        cursor.execute(query)
+                        rows = cursor.fetchall()
+                        for row in rows:
+                            id = row[0]
+                            name = row[1]
+                            poster = row[2]
+                            movies.append(Movie(int(id), name, poster).toJSON())
+                    user.update_movies(movies)
+
+                    login_user(user, remember=True)  # store user in flask session
+
+                    session["movies"] = movies
+
                     return redirect(url_for('views.home'))
+                    #return render_template("home.html", user=current_user)
                 else:
                     flash('Incorrect password, try again', category='alert-danger')
             else:
@@ -60,7 +81,7 @@ def sign_up():
                     'email': email,
                     'firstName': first_name,
                     'password': generate_password_hash(password1, method='sha256'),
-                    'moviesId': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    'moviesId': []
                 })
                 login_user(User(user["_id"], user["email"], user["firstName"], user["moviesId"]), remember=True)  # store user in flask session
                 flash('Account created!', category='alert-success')

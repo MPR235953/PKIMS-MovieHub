@@ -22,7 +22,11 @@
 
             <div class="row mb-4">
                 <div class="col-md-12 ls-subtitle">
-                    <h4> your favorite films </h4>
+                    {% if user.movies|length != 0 %}
+                        <h4> your favorite films </h4>
+                    {% else %}
+                        <h4> your collection is empty </h4>
+                    {% endif %}
                 </div>
             </div>
 
@@ -30,12 +34,12 @@
                 <div class="col-md-12">
 
                     <div class="row flex-nowrap overflow-auto">
-                        {% for movieId in user.movies_id %}
+                        {% for movie in user.movies %}
                             <div class="col-4 mx-2 mb-5 p-3 ls-scroll-item">
 
                                 <div class="row">
                                     <div class="col-md-12 mb-2 ls-movie-title">
-                                        <h5> title {{ movieId }} </h5>
+                                        <h5> {{ movie["name"] }} </h5>
                                     </div>
                                 </div>
 
@@ -43,7 +47,7 @@
                                     <div class="col-md-12 mb-3">
                                         <div class="ls-movie-poster">
                                             <a href="#">
-                                                <img src="https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"/>
+                                                <img src="{{ movie['img'] }}"/>
                                             </a>
                                         </div>
                                     </div>

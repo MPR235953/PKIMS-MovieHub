@@ -1,10 +1,11 @@
 import json
 from urllib.request import urlopen
 
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, session
 from flask_login import login_user, login_required, logout_user, current_user
 
-from src.website import cursor, connection
+from src.website import cursor, connection, collection
+from src.website.models import Movie
 
 views = Blueprint('views', __name__)
 
@@ -14,6 +15,8 @@ API_LINK = 'http://www.omdbapi.com/?apikey=8fa3bc0c&t='
 @views.route('/home')
 @login_required
 def home():
+    movies = session.get("movies")
+    current_user.update_movies(movies)
     return render_template("home.html", user=current_user)
 
 @views.route('/movie')
@@ -23,8 +26,8 @@ def movie():
 
 @views.route('/receive_data', methods=["POST"])
 def receive_data():
-    data = request.get_json()  # Get the JSON data sent from the client
-    received_data = data.get('dataFromJS')  # Access the specific data field
+    data = request.get_json()
+    received_data = data.get('dataFromJS')
     print(received_data)
 
     rows, columns = get_movie_by_name(received_data)
@@ -51,21 +54,41 @@ def get_movie_by_name(movie_title: str):
     return rows, columns
 
 def insert_movie(data: dict):
-    # Generate the column names and values for the SQL query
     del data["Ratings"]
-
     columns = ', '.join(data.keys())
     values = ', '.join(['%s'] * len(data))
-
-    # Create the SQL query
     query = f"INSERT INTO movies ({columns}) VALUES ({values})"
-
-    # Execute the query with the dictionary values
     cursor.execute(query, list(data.values()))
-
-    # Commit the changes to the database
     connection.commit()
 
-    #insert = "insert into movies (Title, Year, Rated, Released, Runtime, Genre, Director, Writer, Actors, Plot, Language, Country, Awards, Poster, Metascore, imdbRating, imdbVotes, imdbID, Type, DVD, BoxOffice, Production, Website, Response) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(data["Title"], data["Year"], data["Rated"], data["Released"], data["Runtime"], ','.join(data["Genre"]), data["Director"], data["Writer"], data["Actors"], data["Plot"], data["Language"], data["Country"], data["Awards"], data["Poster"], data["Metascore"], data["imdbRating"], data["imdbVotes"], data["imdbID"], data["Type"], data["DVD"], data["BoxOffice"], data["Production"], data["Website"], data["Response"])
-    #cursor.execute(insert, data)
-    #connection.commit()
+@views.route('add_movie_to_user', methods=["POST"])
+def add_movie_to_user():
+    try:
+        data = request.get_json()
+        received_data = data.get('dataFromJS')
+        print(received_data)
+
+        query = f"select id, Title, Poster from movies where Title = '{received_data}' limit 1"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        id, name, poster = 0, "", ""
+        for row in rows:
+            id = row[0]
+            name = row[1]
+            poster = row[2]
+
+        if collection.find_one({"_id": current_user.id, "moviesId": id}):
+            flash('Movie already added', category='alert-warning')
+        else:
+            collection.update_one(
+                {"_id": current_user.id},
+                {"$addToSet": {"moviesId": int(id)}}
+            )
+            current_user.movies_id.append(int(id))
+            current_user.add_movie(Movie(int(id), name, poster))
+            current_user.save()
+            flash('Movie was added', category='alert-success')
+        return {"Error": False}
+    except Exception:
+        flash('Movie cannot be added', category='alert-danger')
+        return {"Error": True}

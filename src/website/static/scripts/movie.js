@@ -36,3 +36,29 @@ function getValueFromMovieSearch(){
       document.getElementById("ls-found").style.display = "none";
     });
 }
+
+function addMovieToUser(){
+    var movieTitle = document.getElementById("Title").innerText;
+    console.log(movieTitle);
+
+    const data = { dataFromJS: movieTitle };
+
+    fetch('/add_movie_to_user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      console.log(responseData);
+      // flash
+
+    })
+    .catch(error => {
+      // Handle any errors that occur during the request
+      console.error('Error:', error);
+      // flash
+    });
+}
