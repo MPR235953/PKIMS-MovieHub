@@ -72,3 +72,7 @@ function addMovieToUser(){
       // flash
     });
 }
+
+function addLink(){
+
+}

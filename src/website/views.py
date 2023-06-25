@@ -96,4 +96,34 @@ def add_movie_to_user():
 
 @views.route('remove_movie_from_user', methods=["POST"])
 def remove_movie_from_user():
-    pass
+    try:
+        data = request.get_json()
+        received_data = data.get('dataFromJS')
+        print(received_data)
+
+        query = f"select id from movies where Title = '{received_data}' limit 1"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        id = 0
+        for row in rows: id = row[0]
+
+        if collection.find_one({"_id": current_user.id, "moviesId": id}):
+            collection.update_one(
+                {"_id": current_user.id},
+                {'$pull': {'moviesId': id}}
+            )
+
+            movies = session.get("movies")
+            for movie in movies:
+                if movie['id'] == id:
+                    movies.remove(movie)
+                    break
+            session["movies"] = movies
+
+            flash('Movie was removed', category='alert-success')
+        else:
+            flash('Movie not found', category='alert-warning')
+        return {"Error": False}
+    except Exception:
+        flash('Something goes wrong', category='alert-danger')
+        return {"Error": True}

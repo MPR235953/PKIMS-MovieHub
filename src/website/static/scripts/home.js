@@ -11,8 +11,7 @@ function removeMovieFromUser(movie_name){
     .then(response => response.json())
     .then(responseData => {
       console.log(responseData);
-      // flash
-
+      location.reload();
     })
     .catch(error => {
       // Handle any errors that occur during the request
